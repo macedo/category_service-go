@@ -3,15 +3,11 @@ package main
 import (
 	"log"
 	"net/http"
-)
-
-const (
-	port string = ":8080"
+	"os"
 )
 
 func main() {
 	router := NewRouter()
 
-	log.Println("Category Service star on port", port)
-	log.Fatal(http.ListenAndServe(port, router))
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
 }
