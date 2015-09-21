@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/macedo/category_service-go/Godeps/_workspace/src/github.com/julienschmidt/httprouter"
 	"github.com/macedo/category_service-go/models"
 )
 
 func CategoryIndex(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	categories := Categories{
-		Category{Name: "Clothes"},
-		Category{Name: "Electronic"},
+	categories := models.Categories{
+		models.Category{Name: "Clothes"},
+		models.Category{Name: "Electronic"},
 	}
 
 	json.NewEncoder(w).Encode(categories)
