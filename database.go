@@ -3,12 +3,12 @@ package main
 import (
 	"log"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/lib/pq"
+	"github.com/macedo/category_service-go/Godeps/_workspace/src/github.com/jinzhu/gorm"
+	_ "github.com/macedo/category_service-go/Godeps/_workspace/src/github.com/lib/pq"
 )
 
-func PGSession() gorm.DB {
-	db, err := gorm.Open("postgres", databaseURL)
+func DB() gorm.DB {
+	db, err := gorm.Open("postgres", cfg.DatabaseURL)
 	defer db.Close()
 
 	if err != nil {
