@@ -5,6 +5,7 @@ import (
 	"github.com/macedo/category_service-go/Godeps/_workspace/src/github.com/braintree/manners"
 	"github.com/macedo/category_service-go/Godeps/_workspace/src/github.com/gorilla/mux"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -23,7 +24,7 @@ func NewServer() {
 	Srv = &Server{
 		Router: router,
 		Server: manners.NewWithServer(&http.Server{
-			Addr:           ":1987",
+			Addr:           ":" + os.Getenv("PORT"),
 			Handler:        router,
 			ReadTimeout:    10 * time.Second,
 			WriteTimeout:   10. * time.Second,
@@ -34,7 +35,7 @@ func NewServer() {
 
 func StartServer() {
 	l4g.Info("Starting Server...")
-	l4g.Info("Server is listening on " + "1987")
+	l4g.Info("Server is listening on " + os.Getenv("PORT"))
 
 	go func() {
 		err := Srv.Server.ListenAndServe()
