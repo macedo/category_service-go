@@ -4,14 +4,16 @@ import (
 	l4g "github.com/macedo/category_service-go/Godeps/_workspace/src/code.google.com/p/log4go"
 	"github.com/macedo/category_service-go/Godeps/_workspace/src/github.com/braintree/manners"
 	"github.com/macedo/category_service-go/Godeps/_workspace/src/github.com/gorilla/mux"
+	"github.com/macedo/category_service-go/store"
 	"net/http"
 	"os"
 	"time"
 )
 
 type Server struct {
-	Server *manners.GracefulServer
 	Router *mux.Router
+	Server *manners.GracefulServer
+	Store  store.Store
 }
 
 var Srv *Server
@@ -30,6 +32,7 @@ func NewServer() {
 			WriteTimeout:   10. * time.Second,
 			MaxHeaderBytes: 1 << 20,
 		}),
+		Store: store.NewSqlStore(),
 	}
 }
 
@@ -51,5 +54,6 @@ func StartServer() {
 func StopServer() {
 	l4g.Info("Stopping Server...")
 	Srv.Server.Close()
+	Srv.Store.Close()
 	l4g.Info("Server stopped")
 }
