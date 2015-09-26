@@ -1,25 +1,21 @@
 package main
 
 import (
-	"log"
-	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
-	"github.com/macedo/category_service-go/Godeps/_workspace/src/gopkg.in/caarlos0/env.v1"
+	"github.com/macedo/category_service-go/api"
 )
 
-var cfg config
-
-type config struct {
-	Port        string `env:"PORT" envDefault:"1987"`
-	DatabaseURL string `env:"DATABASE_URL" envDefault:"postgres://category_service-go:@127.0.0.1:5432/category_service-go?sslmode=disable"`
-}
-
-func init() {
-	cfg = config{}
-	env.Parse(&cfg)
-}
-
 func main() {
-	router := NewRouter()
-	log.Fatal(http.ListenAndServe(":"+cfg.Port, router))
+	api.NewServer()
+	api.StartServer()
+	api.InitApi()
+
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+	<-c
+
+	api.StopServer()
 }
